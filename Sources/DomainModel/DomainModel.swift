@@ -75,16 +75,68 @@ public class Job {
         case Hourly(Double)
         case Salary(UInt)
     }
+    public var title: String
+    public var type: JobType
+    
+    public init(title: String, type: JobType) {
+        self.title = title
+        self.type = type
+    }
+    
+    public func calculateIncome(_ hours: Int) -> Int {
+        switch type {
+        case .Salary(let salary):
+            return Int(salary)
+        case .Hourly(let hourlyRate):
+            return Int(hourlyRate) * hours
+        }
+    }
+    
+    public func raise(byPercent: Double) -> Void {
+        switch type{
+        case .Salary(let salary):
+            self.type = .Salary(salary * (1 + UInt(byPercent)))
+        case .Hourly(let hourlyRate):
+            self.type = .Hourly(hourlyRate * (1 + byPercent))
+        }
+    }
+    
+    public func raise(byAmount: Double) -> Void {
+        switch type {
+        case .Salary(let salary):
+            self.type = .Salary(salary + UInt(byAmount))
+        case .Hourly(let hourlyRate):
+            self.type = .Hourly(hourlyRate + byAmount)
+        }
+    }
 }
 
 ////////////////////////////////////
 // Person
 //
 public class Person {
+    public var firstName: String
+    public var lastName: String
+    public var age: Int
+    var job: Job?
+    var spouse: Person?
+    
+    public init(firstName: String, lastName: String, age: Int, job: Job? = nil, spouse: Person? = nil) {
+        self.firstName = firstName
+        self.lastName = lastName
+        self.age = age
+        self.job = job
+        self.spouse = spouse
+    }
+    
+    public func toString() -> String {
+        return "Person: firstName: \(firstName), lastName: \(lastName), age: \(age), job: \(job?.title ?? "None"), spouse: \(spouse?.firstName ?? "None")"
+    }
 }
 
 ////////////////////////////////////
 // Family
 //
 public class Family {
+    
 }
