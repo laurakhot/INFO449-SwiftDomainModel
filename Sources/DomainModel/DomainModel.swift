@@ -9,15 +9,15 @@ struct DomainModel {
 // Money
 //
 public struct Money {
-    var amount : Int
-    var currency: String
-    
+    public var amount : Int
+    public var currency: String
+        
     public init(amount: Int, currency: String) {
         self.amount = amount
         self.currency = currency
     }
     
-    func convert(_ currName : String) -> Money {
+    public func convert(_ currName : String) -> Money {
         // normalizing to USD
         var usdVal = 0
         switch self.currency {
@@ -45,13 +45,24 @@ public struct Money {
         
     }
     
-//    func add(_ money : Money) -> Money {
-//        
-//    }
-//    
-//    func subtract(_ money : Money) -> Money {
-//        
-//    }
+    public func add(_ money : Money) -> Money {
+        if self.currency == money.currency {
+            return Money(amount: self.amount + money.amount, currency: self.currency)
+        } else {
+            let convertedSelf = self.convert(money.currency)
+            return Money(amount: convertedSelf.amount + money.amount, currency: money.currency)
+        }
+    }
+    
+    public func subtract(_ money : Money) -> Money {
+//        if self.currency == money.currency {
+//            return Money(amount: self.amount - money.amount, currency: self.currency)
+//        } else {
+//            let convertedSelf = self.convert(money.currency)
+//            return Money(amount: convertedSelf.amount - money.amount, currency: money.currency)
+//        }
+        add(Money(amount: -money.amount, currency: money.currency))
+    }
 }
 
 
