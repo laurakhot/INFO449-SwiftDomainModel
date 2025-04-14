@@ -55,12 +55,6 @@ public struct Money {
     }
     
     public func subtract(_ money : Money) -> Money {
-//        if self.currency == money.currency {
-//            return Money(amount: self.amount - money.amount, currency: self.currency)
-//        } else {
-//            let convertedSelf = self.convert(money.currency)
-//            return Money(amount: convertedSelf.amount - money.amount, currency: money.currency)
-//        }
         add(Money(amount: -money.amount, currency: money.currency))
     }
 }
@@ -142,6 +136,10 @@ public class Person {
     public func toString() -> String {
         return "[Person: firstName:\(firstName) lastName:\(lastName) age:\(age) job:\(job?.title ?? "nil") spouse:\(spouse?.firstName ?? "nil")]"
     }
+
+    // Prints with Optional wrapper so ternary better for formatting here but more verbose
+    //    String(describing: job?.title)
+    //    String(describing: spouse?.firstName)
 }
 
 ////////////////////////////////////
