@@ -1,3 +1,5 @@
+import Foundation
+
 struct DomainModel {
     var text = "Hello, World!"
         // Leave this here; this value is also tested in the tests,
@@ -89,6 +91,17 @@ public class Job {
             self.type = .Hourly(0)
         default:
             self.type = type
+        }
+    }
+    
+    public func convert() -> Void {
+        switch self.type {
+        case .Salary:
+            break
+        case .Hourly(let hourlyRate):
+            let base = hourlyRate * 2000
+            let rounded = ceil(base / 1000) * 1000
+            type = .Salary(UInt(rounded))
         }
     }
     
