@@ -76,6 +76,7 @@ class JobTests: XCTestCase {
         ("testHourlyRaise", testHourlyRaise),
         ("testNegativeHourly", testNegativeHourly),
         ("testNegativeHourlyRaise", testNegativeHourlyRaise),
-        ("testJobConversion", testJobConversion)
+        ("testJobConversion", testJobConversion),
+        ("testHourlyToSalaryConversion", testHourlyToSalaryConversion)
     ]
 }
