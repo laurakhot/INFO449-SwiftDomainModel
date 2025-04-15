@@ -11,10 +11,16 @@ struct DomainModel {
 public struct Money {
     public var amount : Int
     public var currency: String
+    
+    let supportedCurrencies = ["GBP", "EUR", "CAN", "USD"]
         
     public init(amount: Int, currency: String) {
         self.amount = amount
-        self.currency = currency
+        if !supportedCurrencies.contains(currency) {
+            self.currency = ""
+        } else {
+            self.currency = currency
+        }
     }
     
     public func convert(_ currName : String) -> Money {
@@ -31,17 +37,21 @@ public struct Money {
             usdVal = self.amount
         }
         
+        var curr = ""
         switch currName {
         case "GBP":
             usdVal /= 2
+            curr = "GBP"
         case "EUR":
             usdVal = Int(Double(usdVal) * 1.5)
+            curr = "EUR"
         case "CAN":
             usdVal = Int(Double(usdVal) * 1.25)
+            curr = "CAN"
         default:
-            break
+            curr = "USD"
         }
-        return Money(amount: usdVal, currency: currName)
+        return Money(amount: usdVal, currency: curr)
         
     }
     
@@ -74,7 +84,12 @@ public class Job {
     
     public init(title: String, type: JobType) {
         self.title = title
-        self.type = type
+        switch type {
+        case .Hourly(let hourlySalary) where hourlySalary < 0:
+            self.type = .Hourly(0)
+        default:
+            self.type = type
+        }
     }
     
     public func calculateIncome(_ hours: Int) -> Int {
@@ -157,7 +172,7 @@ public class Family {
     }
     
     public func haveChild(_ child: Person) -> Bool {
-        if self.members[0].age < 21 || self.members[1].age < 21 {
+        if self.members[0].age < 21 && self.members[1].age < 21 {
             return false
         }
         self.members.append(child)

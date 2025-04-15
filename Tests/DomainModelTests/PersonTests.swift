@@ -67,9 +67,35 @@ class FamilyTests : XCTestCase {
         let familyIncome = family.householdIncome()
         XCTAssert(familyIncome == 12000)
     }
-  
+    
+    // testing family with both spouses under 21
+    func testFamilyThatCantHaveKids() {
+        let amy = Person(firstName: "Amy", lastName: "Smith", age: 19)
+        let mark = Person(firstName: "Mark", lastName: "Cuban", age: 20)
+        let susan = Person(firstName: "Susan", lastName: "Cuban", age: 0)
+        let family = Family(spouse1: amy, spouse2: mark)
+        
+        XCTAssertFalse(family.haveChild(susan))
+    }
+    
+    // 2 spouses with negative incomes have a household income of 0
+    
+    func testNegativeFamilyIncome() {
+        let person1 = Person(firstName: "John", lastName: "Doe", age: 30)
+        person1.job = Job(title: "Software Developer", type: Job.JobType.Hourly(-40.0))
+        
+        let person2 = Person(firstName: "Jane", lastName: "Doe", age: 30)
+        person2.job = Job(title: "Teacher", type: Job.JobType.Hourly(-60.0))
+        
+        let family = Family(spouse1 : person1, spouse2 : person2)
+        let familyIncome = family.householdIncome()
+        XCTAssert(familyIncome == 0)
+    }
+    
     static var allTests = [
         ("testFamily", testFamily),
         ("testFamilyWithKids", testFamilyWithKids),
+        ("testFamilyThatCantHaveKids", testFamilyThatCantHaveKids),
+        ("testNegativeFamilyIncome", testNegativeFamilyIncome)
     ]
 }

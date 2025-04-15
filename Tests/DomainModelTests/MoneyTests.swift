@@ -80,6 +80,32 @@ class MoneyTests: XCTestCase {
     XCTAssert(total.amount == 10)
     XCTAssert(total.currency == "GBP")
   }
+    
+// my subtract tests
+  func testSubtractUSDfromUSD() {
+    let total = tenUSD.subtract(tenUSD)
+    XCTAssert(total.amount == 0)
+    XCTAssert(total.currency == "USD")
+  }
+    
+  func testSubtractUSDfromGBP() {
+    let total = tenUSD.subtract(fiveGBP)
+    XCTAssert(total.amount == 0)
+    XCTAssert(total.currency == "GBP")
+  }
+    
+// my conversion test -> for unsupported currencies returns usd
+  func testConvertWithUnsupportedCurrency() {
+      let money = fiveGBP.convert("RUB")
+      XCTAssert(money.amount == 10)
+      XCTAssert(money.currency == "USD")
+  }
+// test unsupported currency creation
+    func testCreatingUnsupportedCurrency() {
+        let sixKYD = Money(amount: 6, currency: "KYD")
+        XCTAssert(sixKYD.amount == 6)
+        XCTAssert(sixKYD.currency == "")
+    }
 
     static var allTests = [
         ("testCanICreateMoney", testCanICreateMoney),
@@ -96,6 +122,10 @@ class MoneyTests: XCTestCase {
         
         ("testAddUSDtoUSD", testAddUSDtoUSD),
         ("testAddUSDtoGBP", testAddUSDtoGBP),
+        ("testSubtractUSDfromUSD", testSubtractUSDfromUSD),
+        ("testSubtractUSDfromGBP", testSubtractUSDfromGBP),
+        ("testConvertWithUnsupportedCurrency", testConvertWithUnsupportedCurrency),
+        ("testCreatingUnsupportedCurrency", testCreatingUnsupportedCurrency)
     ]
 }
 

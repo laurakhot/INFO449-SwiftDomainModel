@@ -37,11 +37,32 @@ class JobTests: XCTestCase {
         job.raise(byPercent: 1.0) // Nice raise, bruh
         XCTAssert(job.calculateIncome(10) == 320)
     }
-  
+    
+    // negative hours gets converted to 0 hourly
+    func testNegativeHourly() {
+        let job = Job(title: "Influencer", type: Job.JobType.Hourly(-5.0))
+        XCTAssert(job.calculateIncome(10) == 0)
+        
+        job.raise(byAmount: 100)
+        XCTAssert(job.calculateIncome(5) == 500)
+    }
+    
+    // percentage raise for negative salary returns 0 income
+    func testNegativeHourlyRaise() {
+        let job = Job(title: "Student", type: Job.JobType.Hourly(-3.0))
+        
+        XCTAssert(job.calculateIncome(10) == 0)
+        
+        job.raise(byPercent: 1.0)
+        XCTAssert(job.calculateIncome(5) == 0)
+    }
+    
     static var allTests = [
         ("testCreateSalaryJob", testCreateSalaryJob),
         ("testCreateHourlyJob", testCreateHourlyJob),
         ("testSalariedRaise", testSalariedRaise),
         ("testHourlyRaise", testHourlyRaise),
+        ("testNegativeHourly", testNegativeHourly),
+        ("testNegativeHourlyRaise", testNegativeHourlyRaise)
     ]
 }
